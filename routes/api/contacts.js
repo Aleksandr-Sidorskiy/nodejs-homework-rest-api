@@ -1,30 +1,12 @@
 const express = require('express')
 const ctrl = require("../../controllers/contacts");
 const { ctrlWrapper } = require("../../helpers");
-const {validateBody} = require("../../middlewares");
+const {validateBody, isValidId} = require("../../middlewares");
 const { schemas } = require("../../models/contact");
 const router = express.Router();
-// const Joi = require('joi');
 
-// const contactsOperations = require("../../models/contacts");
-
-// const contactSchema = Joi.object({
-//   name: Joi.string()
-//     .alphanum()
-//     .min(3)
-//     .max(30)
-//     .required(),
-  
-//   email: Joi.string()
-//     .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
-//     .required(),
-
-//   phone: Joi.string()
-//     .pattern(/^[0-9]+$/, 'numbers')
-//     .required(),
-// });
 // отримати усі контакти
-router.get("/", ctrlWrapper(ctrl.listContacts));
+
 // router.get('/', async (req, res, next) => {
 //   try {
     
@@ -40,7 +22,10 @@ router.get("/", ctrlWrapper(ctrl.listContacts));
 //    next(error)
 //   }
 // });
+router.get("/", ctrlWrapper(ctrl.listContacts));
+
 // отримати одного контакта
+
 // router.get('/:contactId', async (req, res, next) => {
 
 //   try {
@@ -63,28 +48,29 @@ router.get("/", ctrlWrapper(ctrl.listContacts));
 //     next(error);
 //   }
 // })
-// добавлення контакта
-router.post("/",validateBody(schemas.addSchema), ctrlWrapper(ctrl.addContact) );
+router.get("/:id", isValidId, ctrlWrapper(ctrl.getContact));
 
+// добавлення контакта
 // router.post('/', async (req, res, next) => {
-//   try {
-//     const { error } = contactSchema.validate(req.body);
-//     if (error) {
-//       error.status = 400;
-//       throw error;
-//     }
-//     const contacts = await contactsOperations.addContact(req.body);
-//     res.status(201).json({
-//       status: "success",
-//       code: 201,
-//       data: {
-//         contacts
-//       }
-//     })
-//   } catch (error) {
-//     next(error);
-//   }
-// })
+    //   try {
+        //     const { error } = contactSchema.validate(req.body);
+        //     if (error) {
+            //       error.status = 400;
+            //       throw error;
+            //     }
+            //     const contacts = await contactsOperations.addContact(req.body);
+            //     res.status(201).json({
+                //       status: "success",
+                //       code: 201,
+                //       data: {
+                    //         contacts
+                    //       }
+                    //     })
+                    //   } catch (error) {
+                        //     next(error);
+                        //   }
+                        // })           
+router.post("/", validateBody(schemas.addSchema), ctrlWrapper(ctrl.addContact));
 
 // видалення контакта
 // router.delete('/:contactId', async (req, res, next) => {
@@ -109,6 +95,7 @@ router.post("/",validateBody(schemas.addSchema), ctrlWrapper(ctrl.addContact) );
 //   next(error);
 // }
 // })
+router.delete("/:id", isValidId, ctrlWrapper(ctrl.removeContact));
 
 // оновлення контакта
 // router.put('/:contactId', async (req, res, next) => {
@@ -139,5 +126,7 @@ router.post("/",validateBody(schemas.addSchema), ctrlWrapper(ctrl.addContact) );
 //   }
 
 // })
+router.put("/:id", isValidId, validateBody(schemas.addSchema), ctrlWrapper(ctrl.updateContact));
 
+router.patch("/:id/favorite", isValidId, validateBody(schemas.updateFavoriteSchema), ctrlWrapper(ctrl.updateFavorite));
 module.exports = router
