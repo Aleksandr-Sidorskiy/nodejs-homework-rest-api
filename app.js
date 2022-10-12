@@ -1,26 +1,10 @@
 // I6ZO0NCYpRo0pO7R 
-// const mongoose = require("mongoose");
 const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
 const contactsRouter = require('./routes/api/contacts');
 require("dotenv").config();
 const authRouter = require("./routes/api/auth");
-// const jwt = require("jsonwebtoken");
-
-// const { SECRET_KEY } = process.env;
-// const payload = {
-//   id: "634070472bfa4066fa48f459",
-// };
-// const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
-// console.log(token);
-
-// try {
-//   const result1 = jwt.verify(token, SECRET_KEY)
-//   console.log(result1);
-// } catch (error) {
-  
-// }
 
 const app = express()
 
