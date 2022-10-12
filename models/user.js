@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
-const { handleSaveErrors } = require("../middlewares");
+// const  handleSaveErrors  = require("../middlewares");
+const bcrypt= require("bcrypt")
 
 const userSchema = new Schema({
   password: {
@@ -17,15 +18,16 @@ const userSchema = new Schema({
     enum: ["starter", "pro", "business"],
     default: "starter"
   },
-  // token: {
-  //   type: String,
-  //   default: null,
-  // },
-  
-
-});
-
-userSchema.post("save", handleSaveErrors);
+  token: {
+    type: String,
+    default: null,
+  },
+}, { versionKey: false, timestamps: true }
+);
+userSchema.methods.comparePassword = function (password) {
+  return bcrypt.compareSync(password, this.password);
+};
+// userSchema.post("save", handleSaveErrors);
 
 const registerSchema = Joi.object({
     password: Joi.string().required(),
