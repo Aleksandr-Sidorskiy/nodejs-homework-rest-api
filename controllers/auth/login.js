@@ -3,7 +3,6 @@ const { RequestError } = require("../../helpers");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-
 const { SECRET_KEY } = process.env;
 
 const login = async (req, res) => {
@@ -11,16 +10,16 @@ const login = async (req, res) => {
      const user = await User.findOne({ email });
     if (!user) {
         throw RequestError(401,  "Email not found")
-    }
+    };
         const passwordCompare = await bcrypt.compare(password, user.password);
     if (!passwordCompare) {
         throw RequestError(401, "Password is wrong");
-    }
+    };
     const payload = {
         id: user._id,
     };
     
-        const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
     res.json({
         token,
     })
