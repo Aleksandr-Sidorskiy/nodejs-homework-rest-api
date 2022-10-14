@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
-// const  handleSaveErrors  = require("../helpers");
-const bcrypt= require("bcrypt")
+const  handleSaveErrors  = require("../handeleSaveErrors");
+
 
 const userSchema = new Schema({
   password: {
@@ -24,22 +24,23 @@ const userSchema = new Schema({
   },
 }, { versionKey: false, timestamps: true }
 );
-userSchema.methods.comparePassword = function (password) {
-  return bcrypt.compareSync(password, this.password);
-};
-// userSchema.post("save", handleSaveErrors);
+
+userSchema.post("save", handleSaveErrors);
 
 const registerSchema = Joi.object({
     password: Joi.string().required(),
     email: Joi.string().required(),
-    subscription: Joi.string(),
+    subscription: Joi.string().valid("starter", "pro", "business"),
     token: Joi.string(),
 });
 
 const loginSchema = Joi.object({
-    password: Joi.string().required(),
-    email: Joi.string().required(),
+  subscription: Joi.string().valid("starter", "pro", "business").required(),
 });
+// const loginSchema = Joi.object({
+//     password: Joi.string().required(),
+//     email: Joi.string().required(),
+// });
 
 const schemas = {
     registerSchema,
