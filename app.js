@@ -1,11 +1,10 @@
 // I6ZO0NCYpRo0pO7R 
-// const mongoose = require("mongoose");
+require("dotenv").config();
 const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
 const contactsRouter = require('./routes/api/contacts');
-require("dotenv").config();
-
+const authRouter = require("./routes/api/auth");
 
 const app = express()
 
@@ -15,6 +14,7 @@ app.use(logger(formatsLogger))
 app.use(cors())
 app.use(express.json())
 
+app.use("/api/auth", authRouter);
 app.use('/api/contacts', contactsRouter)
 
 app.use((req, res) => {
