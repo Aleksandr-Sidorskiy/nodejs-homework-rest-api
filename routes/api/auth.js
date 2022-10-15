@@ -10,7 +10,7 @@ const router = express.Router();
 router.post("/register",validateBody(schemas.registerSchema), ctrlWrapper(ctrl.register));
 router.post("/login",validateBody(schemas.registerSchema), ctrlWrapper(ctrl.login));
 
-router.get("/current", authenticate, ctrlWrapper(ctrl.getCurrent));
-router.get("/logout", authenticate, ctrlWrapper(ctrl.logout))
+router.get("/current", authenticate, ctrlWrapper(ctrl.current));
+router.get("/logout", authenticate, ctrlWrapper(ctrl.logout));
 
 module.exports = router;
