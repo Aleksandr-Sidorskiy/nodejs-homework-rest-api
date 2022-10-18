@@ -5,9 +5,11 @@ const logger = require('morgan');
 const cors = require('cors');
 const contactsRouter = require('./routes/api/contacts');
 const authRouter = require("./routes/api/auth");
+
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs/promises");
+const { User } = require("./models");
 
 const app = express()
 
@@ -16,6 +18,7 @@ const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
 app.use(logger(formatsLogger))
 app.use(cors())
 app.use(express.json())
+app.use(express.static("public"))
 // ===============================
 const tempDir = path.join(__dirname, "temp");
 
@@ -39,7 +42,9 @@ app.post("/api/contacts", upload.single("avatar"), async (req, res) => {
   // console.log(req.file);
   const { path: tempUpload, originalname } = req.file;
   const resultUpload = path.join(contactDir, originalname);
-  await fs.rename(tempUpload, resultUpload)
+  await fs.rename(tempUpload, resultUpload);
+  
+  await User.findByIdAndUpdate
 });
 
 app.get("/api/contacts", async (req, res) => {
