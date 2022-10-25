@@ -5,22 +5,17 @@ const logger = require('morgan');
 const cors = require('cors');
 const contactsRouter = require('./routes/api/contacts');
 const authRouter = require("./routes/api/auth");
-// ===========================
-// const sgMail = require("@sendgrid/mail")
-// const { SENDGRID_API_KEY } = process.env;
-// sgMail.setApiKey(SENDGRID_API_KEY);
 
-// const mail = {
-//   to: "sanu43967@gmail.com",
-//   from: "sanuch3967@gmail.com",
-//   subject: "HW6",
-//   html: "text letter"
-// };
 
-// sgMail.send(mail)
-//   .then(() => console.log("mail send success"))
-//   .catch(error => console.log(error.message))
-// ===============================
+
+
+
+
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs/promises");
+const { User } = require("./models");
+
 const app = express()
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
@@ -28,7 +23,39 @@ const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
 app.use(logger(formatsLogger))
 app.use(cors())
 app.use(express.json())
+app.use(express.static("public"))
+// ===============================
+const tempDir = path.join(__dirname, "temp");
 
+const multerConfig = multer.diskStorage({
+  destination: tempDir,
+  filename: (req, file, cb) => {
+    cb(null, file.originalname)
+  }
+});
+
+const upload = multer({
+  storage: multerConfig,
+});
+
+const contacts = [];
+
+const contactDir = path.join(__dirname, "public", "avatar");
+
+app.post("/api/contacts", upload.single("avatar"), async (req, res) => {
+  // console.log(req.body);
+  // console.log(req.file);
+  const { path: tempUpload, originalname } = req.file;
+  const resultUpload = path.join(contactDir, originalname);
+  await fs.rename(tempUpload, resultUpload);
+  
+  await User.findByIdAndUpdate
+});
+
+app.get("/api/contacts", async (req, res) => {
+  res.json(contacts)
+})
+// ==================================
 app.use("/api/auth", authRouter);
 app.use('/api/contacts', contactsRouter)
 
