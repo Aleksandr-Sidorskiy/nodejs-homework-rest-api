@@ -19,11 +19,6 @@ const register = async (req, res) => {
       subscription: result.subscription,
     },
   });
-    // res.status(201).json({
-    //     email: result.email,
-    //     subscription: result.subscription,
-    //     token:result.token,
-    // })
 };
 
 module.exports = register;

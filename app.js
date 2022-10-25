@@ -5,7 +5,22 @@ const logger = require('morgan');
 const cors = require('cors');
 const contactsRouter = require('./routes/api/contacts');
 const authRouter = require("./routes/api/auth");
+// ===========================
+// const sgMail = require("@sendgrid/mail")
+// const { SENDGRID_API_KEY } = process.env;
+// sgMail.setApiKey(SENDGRID_API_KEY);
 
+// const mail = {
+//   to: "sanu43967@gmail.com",
+//   from: "sanuch3967@gmail.com",
+//   subject: "HW6",
+//   html: "text letter"
+// };
+
+// sgMail.send(mail)
+//   .then(() => console.log("mail send success"))
+//   .catch(error => console.log(error.message))
+// ===============================
 const app = express()
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
