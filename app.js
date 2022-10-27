@@ -14,38 +14,7 @@ app.use(logger(formatsLogger))
 app.use(cors())
 app.use(express.json())
 app.use(express.static("public"))
-// ===============================
-// const tempDir = path.join(__dirname, "temp");
 
-// const multerConfig = multer.diskStorage({
-//   destination: tempDir,
-//   filename: (req, file, cb) => {
-//     cb(null, file.originalname)
-//   }
-// });
-
-// const upload = multer({
-//   storage: multerConfig,
-// });
-
-// const contacts = [];
-
-// const contactDir = path.join(__dirname, "public", "avatar");
-
-// app.post("/api/contacts", upload.single("avatar"), async (req, res) => {
-//   // console.log(req.body);
-//   // console.log(req.file);
-//   const { path: tempUpload, originalname } = req.file;
-//   const resultUpload = path.join(contactDir, originalname);
-//   await fs.rename(tempUpload, resultUpload);
-  
-//   await User.findByIdAndUpdate
-// });
-
-// app.get("/api/contacts", async (req, res) => {
-//   res.json(contacts)
-// })
-// ==================================
 app.use("/api/auth", authRouter);
 app.use('/api/contacts', contactsRouter)
 
