@@ -6,12 +6,6 @@ const cors = require('cors');
 const contactsRouter = require('./routes/api/contacts');
 const authRouter = require("./routes/api/auth");
 
-
-// const multer = require("multer");
-// const path = require("path");
-// const fs = require("fs/promises");
-// const { User } = require("./models");
-
 const app = express()
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
